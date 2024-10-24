@@ -1,0 +1,142 @@
+syntax="proto3";
+package dbService;
+option go_package="dbService/proto";
+import  "google/protobuf/empty.proto";
+
+message userRequest{
+  string name=1;
+  string phone=2;
+  string EmpID=3;
+  string email=4;
+  string  company=5;
+  int32 id=6;
+  repeated string roles=7;
+  string Timestamp=8;
+  string Password=9;
+}
+
+message userResponse{
+  string name=1;
+  string phone=2;
+  string EmpID=3;
+  string email=4;
+  string  company=5;
+  int32 id=6;
+  repeated string roles=7;
+  string Timestamp=8;
+  string Password=9;
+}
+
+message userID{
+  int32 ID=1;
+}
+
+
+message ListUserResponse{
+  repeated userResponse users=1;
+}
+
+
+message RoleRequest{
+
+  string name=1;
+  string Description=2;
+  repeated string action=3;
+  int32 id=4;
+  repeated int32 users=7;
+  string Timestamp=6;
+  int32 createdBy=8;
+
+}
+
+message RoleResponse{
+  string name=1;
+  string Description=2;
+  repeated string action=3;
+  int32 id=4;
+  string Timestamp=6;
+  repeated int32 users=7;
+  int32 createdBy=8;
+}
+message AssignUser{
+  int32 roleId=1;
+  int32 userID=2;
+}
+message roleID{
+  int32 ID=1;
+}
+message Roles{
+  repeated RoleRequest roles=1;
+}
+
+
+message TicketRequest{
+  string name=1;
+  string Description=2;
+  int32 AssignedTo=3;
+  int32 Priority=4;
+  string Status=5;
+  string Timestamp=6;
+  int32 ID=7;
+  repeated string labels=8;
+  int32 createdBy=9;
+}
+
+message TicketResponse{
+  string name=1;
+  string Description=2;
+  int32 AssignedTo=3;
+  int32 Priority=4;
+  string Status=5;
+  string Timestamp=6;
+  int32 ID=7;
+  repeated string labels=8;
+  int32 createdBy=9;
+
+}
+
+message TicketID{
+  int32 ID=1;
+}
+message TicketLabel{
+  int32 userID=2;
+  string label=1;
+}
+
+message ListTicketResponse{
+  repeated TicketResponse tickets=1;
+}
+
+message AssignTicket{
+  int32 userID=2;
+  int32 ID=1;
+}
+message userEmail{
+  string email=1;
+}
+service dbService {
+  rpc createUser(userRequest) returns (userResponse);
+  rpc GetUser(userID) returns (userResponse);
+  rpc GetAllusers(google.protobuf.Empty) returns (ListUserResponse);
+  rpc updateuser(userRequest) returns(google.protobuf.Empty);
+  rpc deleteuser(userID) returns (google.protobuf.Empty);
+  rpc createRole(RoleRequest) returns (RoleResponse);
+  rpc GetRole(roleID) returns(RoleResponse);
+  rpc updateRole(RoleRequest) returns(RoleResponse);
+  rpc deleteRole(roleID) returns (google.protobuf.Empty);
+  rpc assignRole(AssignUser) returns(roleID);
+  rpc unAssignRole(AssignUser) returns(roleID);
+  rpc GetAllRoles(google.protobuf.Empty) returns (Roles );
+  rpc GetAllUserRoles(AssignUser) returns (Roles );
+  rpc createTicket(TicketRequest) returns (TicketResponse);
+  rpc GetTicket(TicketID) returns (TicketResponse);
+  rpc GetAllTicketsForUser(TicketID) returns (ListTicketResponse);
+  rpc updateTicket(TicketRequest) returns(google.protobuf.Empty);
+  rpc deleteTicket(TicketID) returns (google.protobuf.Empty);
+  rpc getTicketsByLabel(TicketLabel) returns (ListTicketResponse);
+  rpc getTicketsByPriority(TicketLabel) returns (ListTicketResponse);
+  rpc assignTicketToUser(AssignTicket)returns (google.protobuf.Empty);
+  rpc GetUserByEmail(userEmail) returns (userResponse);
+
+
+}

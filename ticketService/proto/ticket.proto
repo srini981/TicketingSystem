@@ -1,0 +1,56 @@
+syntax="proto3";
+package ticketService;
+option go_package="ticketService/proto";
+import  "google/protobuf/empty.proto";
+
+message TicketRequest{
+  int32 id=7;
+  string name=1;
+  string Description=2;
+  int32 AssignedTo=3;
+  int32 Priority=4;
+  string Status=5;
+  string Timestamp=6;
+  int32 createdBy=9;
+  repeated string labels=8;
+
+}
+
+message TicketResponse{
+  string name=1;
+  string Description=2;
+  int32 AssignedTo=3;
+  int32 Priority=4;
+  string Status=5;
+  string Timestamp=6;
+  int32 ID=7;
+  int32 createdBy=9;
+  repeated string labels=8;
+
+}
+
+message TicketID{
+  int32 ID=1;
+}
+message TicketLabel{
+  int32 userID=2;
+  string label=1;
+}
+message AssignTicket{
+  int32 userID=2;
+  int32 ID=1;
+}
+
+message ListTicketResponse{
+  repeated TicketResponse tickets=1;
+}
+service ticketService {
+  rpc createTicket(TicketRequest) returns (TicketResponse);
+  rpc GetTicket(TicketID) returns (TicketResponse);
+  rpc GetAllTicketsForUser(TicketID) returns (ListTicketResponse);
+  rpc updateTicket(TicketRequest) returns(google.protobuf.Empty);
+  rpc deleteTicket(TicketID) returns (google.protobuf.Empty);
+  rpc getTicketsByLabel(TicketLabel) returns (ListTicketResponse);
+  rpc getTicketsByPriority(TicketLabel) returns (ListTicketResponse);
+  rpc assignTicketToUser(AssignTicket)returns (google.protobuf.Empty);
+}

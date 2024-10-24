@@ -1,0 +1,46 @@
+syntax="proto3";
+package rbacService;
+option go_package="rbacService/proto";
+import  "google/protobuf/empty.proto";
+
+message RoleRequest{
+
+  string name=1;
+  string Description=2;
+  repeated string action=3;
+  int32 id=4;
+  string Timestamp=6;
+  repeated int32 users=7;
+  int32 createdBy=8;
+
+}
+
+message RoleResponse{
+  string name=1;
+  string Description=2;
+  repeated string action=3;
+  int32 id=4;
+  repeated int32 users=7;
+  int32 createdBy=8;
+  string Timestamp=6;
+}
+message AssignUser{
+  int32 roleId=1;
+  int32 userID=2;
+}
+message roleID{
+  int32 ID=1;
+}
+message Roles{
+  repeated RoleRequest roles=1;
+}
+service rbacService {
+  rpc createRole(RoleRequest) returns (RoleResponse);
+  rpc GetRole(roleID) returns(RoleResponse);
+  rpc updateRole(RoleRequest) returns(RoleResponse);
+  rpc deleteRole(roleID) returns (google.protobuf.Empty);
+  rpc assignRole(AssignUser) returns(roleID);
+  rpc unAssignRole(AssignUser) returns(roleID);
+  rpc GetAllRoles(google.protobuf.Empty) returns (Roles);
+  rpc GetAllUserRoles(AssignUser) returns (Roles );
+}
