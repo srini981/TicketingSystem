@@ -1,11 +1,12 @@
 package pkg
 
 import (
+	"intelXlabs/dbService/internals"
+	"log"
+
 	"github.com/go-redis/redis"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
-	"intelXlabs/dbService/internals"
-	"log"
 )
 
 // dbclient to handle all db request
@@ -61,7 +62,7 @@ func InitDB() client {
 		log.Fatal("failed to Ping redis database")
 		return client{}
 	}
-	
+
 	dbclient.RedisClient = redisclient
 	return dbclient
 

@@ -2,9 +2,10 @@ package internals
 
 import (
 	"context"
+	"log"
+
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
-	"log"
 )
 
 // MongoDBClient is exported Mongo Database client
