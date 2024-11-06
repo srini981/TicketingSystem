@@ -1,10 +1,11 @@
 package pkg
 
 import (
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials/insecure"
 	"intelXlabs/dbService/proto"
 	"log"
+
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
 )
 
 // client struct used to handle grpc clients and connections
@@ -18,7 +19,7 @@ var client = Init()
 // init function is used to initilize the grpc clients
 func Init() Client {
 	client := Client{}
-	dbClient, dbConn, err := dbClient(":8004")
+	dbClient, dbConn, err := dbClient(":8002")
 
 	if err != nil {
 		log.Fatalf("could't connect to rbac service err: %v", err)
@@ -37,7 +38,7 @@ func dbClient(port string) (proto.DbServiceClient, *grpc.ClientConn, error) {
 	if err != nil {
 		return nil, nil, err
 	}
-	
+
 	dbClient := proto.NewDbServiceClient(conn)
 	return dbClient, conn, nil
 }

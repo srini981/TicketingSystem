@@ -3,10 +3,10 @@ package handlers
 import (
 	"context"
 	"errors"
+	"fmt"
 	"intelXlabs/chatService/internals"
 	"intelXlabs/chatService/proto"
 	"log"
-	"os"
 	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
@@ -36,7 +36,7 @@ func UpdateUserOnlineStatusByUserID(userID string, status string) error {
 		return nil
 	}
 
-	collection := internals.MongoDBClient.Database(os.Getenv("MONGODB_DATABASE")).Collection("users")
+	collection := internals.MongoDBClient.Database("local").Collection("users")
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 
 	_, queryError := collection.UpdateOne(ctx, bson.M{"_id": docID}, bson.M{"$set": bson.M{"online": status}})
@@ -52,7 +52,7 @@ func UpdateUserOnlineStatusByUserID(userID string, status string) error {
 func GetUserByUsername(username string) UserDetailsStruct {
 	var userDetails UserDetailsStruct
 
-	collection := internals.MongoDBClient.Database(os.Getenv("MONGODB_DATABASE")).Collection("users")
+	collection := internals.MongoDBClient.Database("local").Collection("users")
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 
 	_ = collection.FindOne(ctx, bson.M{
@@ -73,7 +73,7 @@ func GetUserByUserID(userID string) UserDetailsStruct {
 		return UserDetailsStruct{}
 	}
 
-	collection := internals.MongoDBClient.Database(os.Getenv("MONGODB_DATABASE")).Collection("users")
+	collection := internals.MongoDBClient.Database("local").Collection("users")
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 
 	_ = collection.FindOne(ctx, bson.M{
@@ -128,9 +128,9 @@ func RegisterQueryHandler(userDetailsRequestPayload UserDetailsRequestPayloadStr
 	} else if userDetailsRequestPayload.Password == "" {
 		return "", errors.New(internals.PasswordCantBeEmpty)
 	} else {
-		collection := internals.MongoDBClient.Database(os.Getenv("MONGODB_DATABASE")).Collection("users")
+		collection := internals.MongoDBClient.Database("local").Collection("users")
 		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-
+		fmt.Println(userDetailsRequestPayload)
 		registrationQueryResponse, registrationError := collection.InsertOne(ctx, bson.M{
 			"username": userDetailsRequestPayload.Username,
 			"password": userDetailsRequestPayload.Password,
@@ -161,7 +161,7 @@ func GetAllOnlineUsers(userID string) []UserDetailsResponsePayloadStruct {
 		return onlineUsers
 	}
 
-	collection := internals.MongoDBClient.Database(os.Getenv("MONGODB_DATABASE")).Collection("users")
+	collection := internals.MongoDBClient.Database("local").Collection("users")
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 
 	cursor, queryError := collection.Find(ctx, bson.M{
@@ -195,7 +195,7 @@ func GetAllOnlineUsers(userID string) []UserDetailsResponsePayloadStruct {
 
 // StoreNewChatMessages is used for storing a new message
 func StoreNewChatMessages(messagePayload MessagePayloadStruct) bool {
-	collection := internals.MongoDBClient.Database(os.Getenv("MONGODB_DATABASE")).Collection("messages")
+	collection := internals.MongoDBClient.Database("local").Collection("messages")
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 
 	_, registrationError := collection.InsertOne(ctx, bson.M{
@@ -215,7 +215,7 @@ func StoreNewChatMessages(messagePayload MessagePayloadStruct) bool {
 func GetConversationBetweenTwoUsers(toUserID string, fromUserID string) []ConversationStruct {
 	var conversations []ConversationStruct
 
-	collection := internals.MongoDBClient.Database(os.Getenv("MONGODB_DATABASE")).Collection("messages")
+	collection := internals.MongoDBClient.Database("local").Collection("messages")
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 
 	queryCondition := bson.M{

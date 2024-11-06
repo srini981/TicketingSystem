@@ -3,13 +3,14 @@ package pkg
 import (
 	"context"
 	"fmt"
-	"github.com/dgrijalva/jwt-go"
-	"github.com/gin-gonic/gin"
 	rb "intelXlabs/rbacService/proto"
 	"intelXlabs/routingService/internals"
 	"log"
 	"net/http"
 	"strings"
+
+	"github.com/dgrijalva/jwt-go"
+	"github.com/gin-gonic/gin"
 )
 
 // JWT middleware to check authentication using JWT

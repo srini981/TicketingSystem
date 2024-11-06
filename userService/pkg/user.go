@@ -2,9 +2,10 @@ package pkg
 
 import (
 	"context"
-	"google.golang.org/protobuf/types/known/emptypb"
 	cp "intelXlabs/chatService/proto"
 	dp "intelXlabs/dbService/proto"
+
+	"google.golang.org/protobuf/types/known/emptypb"
 
 	"intelXlabs/userService/proto"
 	"log"
@@ -167,7 +168,7 @@ func (u *UserService) GetUserByEmail(ctx context.Context, in *proto.UserEmail) (
 		log.Println("calling GetUserByEmail method failed:", err)
 		return nil, err
 	}
-	
+
 	userResponse := &proto.UserResponse{Id: resUser.Id, Name: resUser.Name, Email: resUser.Email, Password: resUser.Password}
 
 	log.Println("got response from GetUserByEmail method in dbservice")

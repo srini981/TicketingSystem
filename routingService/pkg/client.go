@@ -1,12 +1,13 @@
 package pkg
 
 import (
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials/insecure"
 	rbac "intelXlabs/rbacService/proto"
 	ticket "intelXlabs/ticketService/proto"
 	user "intelXlabs/userService/proto"
 	"log"
+
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
 )
 
 // client struct to handle all the grpc connections
@@ -24,21 +25,21 @@ var client = InitClients()
 // initclient is used to initilize all the grpc clients and connections
 func InitClients() Client {
 	client := Client{}
-	rbacClient, rbacConn, err := RbacClient(":8006")
+	rbacClient, rbacConn, err := RbacClient(":8003")
 	if err != nil {
 		log.Fatalf("could't connect to rbac service err: %v", err)
 		return Client{}
 	}
 	client.RbacClient = rbacClient
 	client.RbacConn = rbacConn
-	ticketClient, ticketConn, err := TicketClient(":8008")
+	ticketClient, ticketConn, err := TicketClient(":8005")
 	if err != nil {
 		log.Fatalf("could't connect to ticket service err: %v", err)
 		return Client{}
 	}
 	client.TicketClient = ticketClient
 	client.TicketConn = ticketConn
-	userClient, userConn, err := UserClient(":8003")
+	userClient, userConn, err := UserClient(":8006")
 	if err != nil {
 		log.Fatalf("could't connect to user service err: %v", err)
 		return Client{}

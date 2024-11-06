@@ -1,10 +1,11 @@
 package pkg
 
 import (
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials/insecure"
 	cp "intelXlabs/chatService/proto"
 	"intelXlabs/dbService/proto"
+
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
 
 	"log"
 )
@@ -23,7 +24,7 @@ var client = Init()
 // init function to initilize all the grpc clients
 func Init() Client {
 	client := Client{}
-	dbClient, dbConn, err := dbClient(":8004")
+	dbClient, dbConn, err := dbClient(":8002")
 
 	if err != nil {
 		log.Fatalf("could't connect to rbac service err: %v", err)

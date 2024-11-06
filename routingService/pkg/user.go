@@ -4,10 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"github.com/dgrijalva/jwt-go"
-	"github.com/gin-gonic/gin"
-	"golang.org/x/crypto/bcrypt"
-	emptypb "google.golang.org/protobuf/types/known/emptypb"
+	"fmt"
 	"intelXlabs/routingService/internals"
 	tp "intelXlabs/userService/proto"
 	"io/ioutil"
@@ -15,6 +12,11 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
+
+	"github.com/dgrijalva/jwt-go"
+	"github.com/gin-gonic/gin"
+	"golang.org/x/crypto/bcrypt"
+	emptypb "google.golang.org/protobuf/types/known/emptypb"
 )
 
 // function used to validate the emailid of the user
@@ -129,7 +131,7 @@ func CreateUser(c *gin.Context) {
 	user.Password = string(hashedPassword)
 
 	resuser, err := client.UserClient.CreateUser(ctx, &user)
-
+	fmt.Println(err)
 	if err != nil {
 		log.Println("unable to  create  user using  user client")
 

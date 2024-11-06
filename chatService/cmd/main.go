@@ -2,17 +2,17 @@ package main
 
 import (
 	"fmt"
-	"github.com/gorilla/mux"
-	"github.com/gorilla/websocket"
-	"github.com/joho/godotenv"
-	"google.golang.org/grpc"
 	"intelXlabs/chatService/internals"
 	handlers "intelXlabs/chatService/pkg"
 	"intelXlabs/chatService/proto"
 	"log"
 	"net"
 	"net/http"
-	"os"
+
+	"github.com/gorilla/mux"
+	"github.com/gorilla/websocket"
+	"github.com/joho/godotenv"
+	"google.golang.org/grpc"
 )
 
 func main() {
@@ -20,7 +20,7 @@ func main() {
 	godotenv.Load()
 
 	fmt.Println(
-		fmt.Sprintf("%s%s%s%s", "Server will start at http://", os.Getenv("HOST"), ":", os.Getenv("PORT")),
+		fmt.Sprintf("%s%s%s%s", "Server will start at http://localhost:8007"),
 	)
 	go startGrpcServer()
 	internals.ConnectDatabase()
@@ -29,7 +29,7 @@ func main() {
 
 	AddApproutes(route)
 
-	serverPath := ":8000"
+	serverPath := ":8007"
 
 	cors := internals.GetCorsConfig()
 
